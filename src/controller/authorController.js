@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 const authorModel=require('../model/autherModel')
@@ -16,3 +17,22 @@ const autherName=async function (req,res){
 }
 
 module.exports.autherName=autherName
+=======
+const authormodel=require('..model/autherModel');
+
+const createAuthor=async function(req,res){
+    
+    try {
+        let book=req.body;
+        let createbook=await authormodel.create(book)
+        res.status(200).send({data:createbook,status:True})
+
+    } catch (err) {
+        res.status(500).send({msg:err.message})
+        
+    }
+}
+
+
+module.exports.createAuthor=createAuthor
+>>>>>>> d8b2480a6de6bea1c25eb6a9654b2a1e93192292
