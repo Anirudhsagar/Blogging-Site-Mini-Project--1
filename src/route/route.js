@@ -9,6 +9,7 @@ router.post("/author", authorController.createAuthor  )
 
 router.post("/blogs",blogsController.CreateBlog)
 router.get("/getBlogs",blogsController.getBlogs)
+router.put("/blogs/:blogId",blogsController.putBlogs)
 
 
 
