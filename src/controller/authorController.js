@@ -12,9 +12,9 @@ const createAuthor = async function (req, res) {
          if(!title){res.status(400).send({msg:"title is required"})}
 
         let validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        if (!validEmail.test(req.body.email)) { return res.status(400).send({ message: "invild email address" }) }
-        let validtitle=['Mr','Mrs','Miss']
-        if (!validtitle.includes(req.body.title)){return res.status(400).send({message:"invilded title"})}
+        if (!validEmail.test(req.body.email)) { return res.status(400).send({ message: "invalid email address" }) }
+        let validTitle=['Mr','Mrs','Miss']
+        if (!validTitle.includes(req.body.title)){return res.status(400).send({message:"invalid title"})}
         let createAuthor = await authorModel.create(data)
         res.status(200).send({ data: createAuthor, status: true })
 
