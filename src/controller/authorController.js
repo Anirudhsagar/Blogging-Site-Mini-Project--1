@@ -1,4 +1,4 @@
-const authormodel = require("../model/autherModel");
+const authorModel = require("../model/authorModel");
 
 const createAuthor = async function (req, res) {
 
@@ -15,7 +15,7 @@ const createAuthor = async function (req, res) {
         if (!validEmail.test(req.body.email)) { return res.status(400).send({ message: "invild email address" }) }
         let validtitle=['Mr','Mrs','Miss']
         if (!validtitle.includes(req.body.title)){return res.status(400).send({message:"invilded title"})}
-        let createAuthor = await authormodel.create(data)
+        let createAuthor = await authorModel.create(data)
         res.status(200).send({ data: createAuthor, status: true })
 
     } catch (err) {
