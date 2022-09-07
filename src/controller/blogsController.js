@@ -102,26 +102,6 @@ const deleteBlog = async (req,res)=> {
   }
 }
 
-//delete by query params
-// const deleteQuery = async (req, res) => {
-//   try {
-//     let filter = req.query; 
-//     filter.isDeleted = false 
-//     filter.isPublished = true
-
-//     if(Object.keys(filter).length == 2)  return res.status(400).send({ status: false, message: "Please Enter Query" })
-   
-//     let data = await blogsModel.find(filter).count();
-
-//     if (!data) return res.status(404).send({ status: false, message: "no such data exists" })
-
-//     let blogsData=await blogsModel.updateMany({filter}, { $set: { isDeleted: true, deletedAt:new Date } }, { new: true })
-//     res.send({ status: true,data:blogsData })
-// } catch (err) {
-//     res.status(500).send({ status: false, mag: err.message });
-// }
-// };
-
 const deleteQuery=async function(req,res){
   try{
     let data =req.query
