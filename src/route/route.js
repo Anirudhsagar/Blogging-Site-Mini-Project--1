@@ -9,11 +9,11 @@ const middleware=require("../middleware/auth")
 router.post("/author", authorController.createAuthor  )
 router.post("/loginAuthor",authorController.loginAuthor)
 
-router.post("/blogs",middleware.authentication,blogsController.CreateBlog)
+router.post("/blogs",middleware.authentication,blogsController.CreateBlog)       //,middleware.authentication
 router.get("/getBlogs",blogsController.getBlogs)
-router.put("/blogs/:blogId",middleware.authentication,middleware.authourization,blogsController.putBlogs)
-router.delete("/blogs/:blogId",middleware.authentication,middleware.authourization,blogsController.deleteBlog)
-router.delete("/blogs",middleware.authentication,blogsController.deleteQuery)
+router.put("/blogs/:blogId",middleware.authentication,blogsController.putBlogs)   //,middleware.authentication,middleware.authorization
+router.delete("/blogs/:blogId",blogsController.deleteBlog)    //,middleware.authentication,middleware.authorization
+router.delete("/blogs",blogsController.deleteQuery)      //middleware.authentication,
 
 
 

@@ -32,16 +32,66 @@ const CreateBlog = async function (req, res) {
   }
 };
 
+// const getBlogs = async function (req, res) {
+//   try {
+
+//     let queryData = req.query
+//     queryData.isDeleted = false;
+//     queryData.isPublished = true;
+
+//     if (!(queryData.authorId || queryData.category || queryData.tags || queryData.subcategory)) {
+//       return res.status(400).send({ status: false, msg: "Invalid Filters" })
+//     }
+
+//     let obj = {}                            //creating obj to filterOut only authorized key
+
+//     if (queryData.authorId != undefined) {
+//       obj.authorId = queryData.authorId
+//     }                                       //checking that key has some value or not
+//     if (queryData.category != undefined) {
+//       obj.category = queryData.category
+//     }
+//     if (queryData.tags != undefined) {
+//       obj.tags = queryData.tags
+//     }
+//     if (queryData.subcategory != undefined) {
+//       obj.subcategory = queryData.subcategory
+//     }
+//     //adding key as per the requirement of problem that isDeleted =false & isPublished =true
+//     queryData.isDeleted = false;
+//     queryData.isPublished = true;
+
+//     const blogData = await blogModel.find(obj)
+//     if (blogData.length == 0) {
+//       return res.status(404).send({ status: false, msg: 'No Document Found' })
+//     }
+//     return res.status(200).send({ status: true, Data: blogData })
+
+
+//   }
+//   catch (err) {
+//     return res.status(500).send({ status: false, error: err.message })
+//   }
+
+// }
+
+
+
+
+
 const getBlogs = async function(req,res){
   try{
       let queryData = req.query
+      
       let authorId =req.query.authorId
       if(req.query.authorId){
       if(!authorId) return res.status(400).send({status : false, msg : "Please enter a valid author Id"})
-      }else if(!authorId) return res.status(400).send({status:false,msg:"this is not valid"})
-      
-      const data = await blogsModel.find({$and : [ { isPublished : true, isDeleted : false, ...queryData}]})
-      if(!data.queryData) return res.status(400).send({status:false,msg:"authorId is invalid"});
+      }
+      queryData['isPublished'] = true;
+      queryData['isDeleted'] = false;
+
+      const data = await blogsModel.find( queryData)
+      if(!data) return res.status(400).send({status:false,msg:"authorId is invalid"});
       
       if(data.length==0) return res.status(404).send({status : false, msg : "No data found"})
       res.status(200).send({status : true, data : data})
@@ -58,7 +108,7 @@ const putBlogs = async function (req, res) {
 
     if (Object.keys(data).length == 0) return res.status(400).send({ status: false, msg: "please enter blog details for updating" })
 
-    if (!id) return res.status(400).send({ status: false, msg: "blogid is required" }) // check seriously
+    if (!id) return res.status(400).send({ status: false, msg: "blogId is required" }) // check seriously
 
     let findBlog = await blogsModel.findById(id)
 
@@ -90,8 +140,7 @@ const deleteBlog = async (req,res)=> {
     let dateTime= new Date()
     const checkBlog= await blogsModel.find({_id: blogId, isDeleTed: false})
     if(!checkBlog) return res.status(404).send({status: false, msg: "No Such blog"})
-    // if(!checkBlog.blogId) {return res.status(400).send({status : false, msg : "Please enter a valid author Id"})
-    //   }
+     
     if(checkBlog.isDeleTed==true) return res.status(400).send({status: false, msg: "No such blog available to delete"})
     const data = await blogsModel.findOneAndUpdate(
       {_id : blogId},
