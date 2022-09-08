@@ -6,7 +6,7 @@ const moment = require("moment");
 
 // ------------ createBlog --------------//
 
-const CreateBlog = async function (req, res) {
+const CreateBlog = async (req, res)=> {
   try {
     let data = req.body;
     let CurrentDate = moment().format("DD MM YYYY hh:mm:ss");
@@ -37,18 +37,19 @@ const CreateBlog = async function (req, res) {
 
 // ------------- getBlogs ------------------//
 
-const getBlogs = async function(req,res){
+const getBlogs = async (req,res)=>{
   try{
       let queryData = req.query
-      
-      let authorId =req.query.authorId
-      if(req.query.authorId){
-      if(!authorId) return res.status(400).send({status : false, msg : "Please enter a valid author Id"})
-      }
-      queryData['isPublished'] = true;
+      queryData['isPublished'] = true ;
       queryData['isDeleted'] = false;
 
-      const data = await blogsModel.find( queryData)
+
+      let authorId =req.query.authorId
+      
+      if(!authorId) return res.status(400).send({status : false, msg : "Please enter a valid author Id"})
+      
+     
+      const data = await blogsModel.find(queryData)
       if(!data) return res.status(400).send({status:false,msg:"authorId is invalid"});
       
       if(data.length==0) return res.status(404).send({status : false, msg : "No data found"})
@@ -61,16 +62,17 @@ const getBlogs = async function(req,res){
 
 
 // ------------ putBlogs --------------------//
+
 const putBlogs = async  (req, res)=> {
   try {
     let data = req.body
     let id = req.params.blogId
-
-    if (Object.keys(data).length == 0) return res.status(400).send({ status: false, msg: "please enter blog details for updating" })
-
-    if (!id) return res.status(400).send({ status: false, msg: "blogId is required" }) // check seriously
-
+    // console.log(id)
+        
+    if (id==(":blogId")) return res.status(400).send({ status: false, msg: "blogId is required" }) // check seriously
+    if (data.length<1) return res.status(400).send({ status: false, msg: "please enter blog details for updating" })
     let findBlog = await blogsModel.findById(id)
+    if(!findBlog) return res.send({status:401,msg:"Provided blogId is not valid"})
 
     if (findBlog.isDeleTed == true) res.status(404).send({ msg: "blogs already deleted" })
 

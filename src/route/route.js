@@ -6,28 +6,27 @@ const middleware=require("../middleware/auth")
 
 
 
-router.post("/author", authorController.createAuthor  )  
+router.post("/author", authorController.createAuthor  )     // 1 st api
 
-router.post("/loginAuthor",authorController.loginAuthor)
 
-router.post("/blogs",middleware.authentication,blogsController.CreateBlog) 
+router.post("/blogs",middleware.authentication,blogsController.CreateBlog)       // 2nd api hit
+
       //,middleware.authentication
 
-router.get("/getBlogs",blogsController.getBlogs)
+router.get("/getBlogs",blogsController.getBlogs)       // 3rd api
 
-router.put("/blogs/:blogId",middleware.authentication,middleware.authorization,blogsController.putBlogs)
+router.put("/blogs/:blogId",middleware.authentication,middleware.auth,blogsController.putBlogs)     // 4th api
    //,middleware.authentication,middleware.authorization
 
    
-router.delete("/blogs/:blogId",middleware.authentication,middleware.authorization,blogsController.deleteBlog) 
+router.delete("/blogs/:blogId",middleware.authentication,middleware.authorization,middleware.auth,blogsController.deleteBlog)  //5 th api
    //,middleware.authentication,middleware.authorization
 
 
-router.delete("/blogs",middleware.authentication,blogsController.deleteQuery)
+router.delete("/blogs",middleware.auth,blogsController.deleteQuery)   //6th api
       //middleware.authentication,
 
-
-
+router.post("/loginAuthor",authorController.loginAuthor)   //7th api
 
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const blogsModel = require("../model/blogsModel");
-
+const mongoose = require("mongoose")
 
 
 const authentication=function(req,res,next){
@@ -43,5 +43,19 @@ let b=a.authorId;
 }
 }
 
+const auth= async function(req,res,next){
+    try{
+       let authorId=req.query.authorId
+       if(authorId && !mongoose.isValidObjectId(authorId)) return res.status(401).send({status:false,msg:"enter a valid author  id"})  
+        if(authorId && authorId!=req.loggedInUser) return res.status(401).send({msg:"you are not authorized"})
+         req.authorId=req.loggedInUser
+         next();
+    }catch(error){
+       res.status(500).send({status:false,message:error.message})
+   }
+}
+
+
 module.exports.authentication= authentication
 module.exports.authorization=authorization
+module.exports.auth=auth
