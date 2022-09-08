@@ -6,7 +6,7 @@ const blogsModel = require("../model/blogsModel");
 const authentication=function(req,res,next){
     try{
         let token=req.headers["x-api-key"];
-
+// console.log(token)
         if(!token){
             return res.status(401).send({status:false,message:"the token must be present"});
         }
@@ -14,7 +14,8 @@ const authentication=function(req,res,next){
         if(!decodedToken){
               res.status(403).send({status:false,message:"the provided token is invalid"});
         }
-        req.loggedInUser = decodedToken.authorId
+        req.loggedInUser = decodedToken.ID
+        console.log(req.loggedInUser)
         next();
 
     }catch(error){
@@ -22,11 +23,18 @@ const authentication=function(req,res,next){
  }
 }
 
-const authorization=function(req,res,next){
+const authorization=async function(req,res,next){
     try{
    let newId = req.query.authorId
+   const blogsId=req.params.blogId;
+//    console.log(newId)
+   if(!newId) return res.send({status:false,msg:"authorId must be present in order to proceed further"})
+   
+    let a=await blogsModel.findByIdAndUpdate(blogsId)
+let b=a.authorId;
 
-   if (newId !==  req.loggedInUser){
+// console.log(b)
+   if (b !=  req.loggedInUser){
     return res. status(401).send({status:false, msg: "permission denied"}) 
    }
    next()
@@ -35,5 +43,5 @@ const authorization=function(req,res,next){
 }
 }
 
-module.exports.authentication=authentication
+module.exports.authentication= authentication
 module.exports.authorization=authorization

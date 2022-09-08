@@ -3,6 +3,9 @@ const authorModel = require('../model/authorModel')
 const mongoose = require("mongoose");
 const moment = require("moment");
 
+
+// ------------ createBlog --------------//
+
 const CreateBlog = async function (req, res) {
   try {
     let data = req.body;
@@ -32,52 +35,7 @@ const CreateBlog = async function (req, res) {
   }
 };
 
-// const getBlogs = async function (req, res) {
-//   try {
-
-//     let queryData = req.query
-//     queryData.isDeleted = false;
-//     queryData.isPublished = true;
-
-//     if (!(queryData.authorId || queryData.category || queryData.tags || queryData.subcategory)) {
-//       return res.status(400).send({ status: false, msg: "Invalid Filters" })
-//     }
-
-//     let obj = {}                            //creating obj to filterOut only authorized key
-
-//     if (queryData.authorId != undefined) {
-//       obj.authorId = queryData.authorId
-//     }                                       //checking that key has some value or not
-//     if (queryData.category != undefined) {
-//       obj.category = queryData.category
-//     }
-//     if (queryData.tags != undefined) {
-//       obj.tags = queryData.tags
-//     }
-//     if (queryData.subcategory != undefined) {
-//       obj.subcategory = queryData.subcategory
-//     }
-//     //adding key as per the requirement of problem that isDeleted =false & isPublished =true
-//     queryData.isDeleted = false;
-//     queryData.isPublished = true;
-
-//     const blogData = await blogsModel.find(obj)
-//     if (blogData.length == 0) {
-//       return res.status(404).send({ status: false, msg: 'No Document Found' })
-//     }
-//     return res.status(200).send({ status: true, Data: blogData })
-
-
-//   }
-//   catch (err) {
-//     return res.status(500).send({ status: false, error: err.message })
-//   }
-
-// }
-
-
-
-
+// ------------- getBlogs ------------------//
 
 const getBlogs = async function(req,res){
   try{
@@ -101,6 +59,8 @@ const getBlogs = async function(req,res){
   }
 }
 
+
+// ------------ putBlogs --------------------//
 const putBlogs = async  (req, res)=> {
   try {
     let data = req.body
@@ -133,7 +93,9 @@ const putBlogs = async  (req, res)=> {
     res.status(500).send({ status: false, msg: err.message })
   }
 };
-//delete 
+ 
+// ---------------------- deleteBlog -------------------------- //
+
 const deleteBlog = async (req,res)=> {
   try{
     const blogId = req.params.blogId
@@ -154,6 +116,8 @@ const deleteBlog = async (req,res)=> {
   }
 }
 
+
+// ---------------- deleteQuery ------------------// 
 const deleteQuery=async (req,res)=>{
   try{
     let data =req.query
@@ -171,6 +135,9 @@ const deleteQuery=async (req,res)=>{
     res.status(500).send({status: false, msg: err.message})
   }
 }
+
+
+
 module.exports.CreateBlog = CreateBlog
 module.exports.getBlogs = getBlogs
 module.exports.putBlogs = putBlogs

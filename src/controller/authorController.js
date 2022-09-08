@@ -1,6 +1,9 @@
 const authorModel = require("../model/authorModel");
 const jwt = require('jsonwebtoken')
 
+
+
+// -------- create Author ---------------/// 
 const createAuthor = async function (req, res) {
 
     try {
@@ -29,7 +32,9 @@ const createAuthor = async function (req, res) {
 
     }
 }
-// login author
+   //     ---------------    login author   ------------------ ////
+
+
 const loginAuthor = async function(req,res){
     try{
     let enterEmail = req.body.email
@@ -38,9 +43,9 @@ const loginAuthor = async function(req,res){
     if(!checkEmailPassword){
         return res.status(400).send({status:false,msg:"plz fill valid email and password"})
     }
-    // if login successfull
-    let unqiueId =checkEmailPassword._id 
-    let token = jwt.sign({ID:unqiueId} ,'functionUp-project1')
+    // if login successfully
+    let uniqueId =checkEmailPassword._id 
+    let token = jwt.sign({ID:uniqueId} ,'functionUp-project1')
     res.status(201).send({status:true,msg:token})
 }
 catch (err) {
