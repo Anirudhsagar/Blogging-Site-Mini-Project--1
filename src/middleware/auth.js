@@ -1,4 +1,5 @@
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const blogsModel = require("../model/blogsModel");
 
 
 
@@ -13,27 +14,26 @@ const authentication=function(req,res,next){
         if(!decodedToken){
               res.status(403).send({status:false,message:"the provided token is invalid"});
         }
-        req.loggedInUser = decodedToken.userId
+        req.loggedInUser = decodedToken.authorId
         next();
 
     }catch(error){
-           res.status(500).send({status:false,message:error.message})
-    }
+        res.status(500).send({status:false,message:error.message})
+ }
 }
 
 const authorization=function(req,res,next){
     try{
-        let blogId=req.params.blogId;
-        if(blogId!==req.loggedInUser){
-            res.status(403).send({status:false,msg:"you are not authorized"});
-        }else
-        next();
-    }catch(error){
-        res.status(500).send({status:false,message:error.message})
-    }
+   let newId = req.query.authorId
+
+   if (newId !==  req.loggedInUser){
+    return res. status(401).send({status:false, msg: "permission denied"}) 
+   }
+   next()
+}catch(error){
+    res.status(500).send({status:false,message:error.message})
 }
-
-
+}
 
 module.exports.authentication=authentication
 module.exports.authorization=authorization

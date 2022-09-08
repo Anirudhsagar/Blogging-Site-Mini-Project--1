@@ -11,9 +11,9 @@ router.post("/loginAuthor",authorController.loginAuthor)
 
 router.post("/blogs",middleware.authentication,blogsController.CreateBlog)       //,middleware.authentication
 router.get("/getBlogs",blogsController.getBlogs)
-router.put("/blogs/:blogId",middleware.authentication,blogsController.putBlogs)   //,middleware.authentication,middleware.authorization
-router.delete("/blogs/:blogId",blogsController.deleteBlog)    //,middleware.authentication,middleware.authorization
-router.delete("/blogs",blogsController.deleteQuery)      //middleware.authentication,
+router.put("/blogs/:blogId",middleware.authentication,middleware.authorization,blogsController.putBlogs)   //,middleware.authentication,middleware.authorization
+router.delete("/blogs/:blogId",middleware.authentication,middleware.authorization,blogsController.deleteBlog)    //,middleware.authentication,middleware.authorization
+router.delete("/blogs",middleware.authentication,blogsController.deleteQuery)      //middleware.authentication,
 
 
 

@@ -11,7 +11,7 @@ Repository for backend cohort - Plutonium
 ### Models
 - Author Model
 ```
-{ fname: { mandatory}, lname: {mandatory}, title: {mandatory, enum[Mr, Mrs, Miss]}, email: {mandatory, valid email, unique}, password: {mandatory} }
+{ fName: { mandatory}, lName: {mandatory}, title: {mandatory, enum[Mr, Mrs, Miss]}, email: {mandatory, valid email, unique}, password: {mandatory} }
 ```
 - Blogs Model
 ```
@@ -19,15 +19,15 @@ Repository for backend cohort - Plutonium
 ```
 
 ### Author APIs /authors
-- Create an author - atleast 5 authors
+- Create an author - atLeast 5 authors
 - Create a author document from request body.
   `Endpoint: BASE_URL/authors`
 
 ### POST /blogs
 - Create a blog document from request body. Get authorId in request body only.
 - Make sure the authorId is a valid authorId by checking the author exist in the authors collection.
-- Return HTTP status 201 on a succesful blog creation. Also return the blog document. The response should be a JSON object like [this](#successful-response-structure) 
-- Create atleast 5 blogs for each author
+- Return HTTP status 201 on a successful blog creation. Also return the blog document. The response should be a JSON object like [this](#successful-response-structure) 
+- Create atLeast 5 blogs for each author
 
 - Return HTTP status 400 for an invalid request with a response body like [this](#error-response-structure)
 
@@ -40,7 +40,7 @@ Repository for backend cohort - Plutonium
   - By category
   - List of blogs that have a specific tag
   - List of blogs that have a specific subcategory
-example of a query url: blogs?filtername=filtervalue&f2=fv2
+example of a query url: blogs?filterName=filterValue&f2=fv2
 
 ### PUT /blogs/:blogId
 - Updates a blog by changing the its title, body, adding tags, adding a subcategory. (Assuming tag and subcategory received in body is need to be added)
@@ -54,26 +54,26 @@ example of a query url: blogs?filtername=filtervalue&f2=fv2
 - If the blog document doesn't exist then return an HTTP status of 404 with a body like [this](#error-response-structure) 
 
 ### DELETE /blogs?queryParams
-- Delete blog documents by category, authorid, tag name, subcategory name, unpublished
+- Delete blog documents by category, authorId, tag name, subcategory name, unpublished
 - If the blog document doesn't exist then return an HTTP status of 404 with a body like [this](#error-response-structure)
 
 ## Phase II
 
-- Add authentication and authroisation feature
+- Add authentication and authorization feature
 
 ### POST /login
-- Allow an author to login with their email and password. On a successful login attempt return a JWT token contatining the authorId in response body like [this](#Successful-login-Response-structure)
+- Allow an author to login with their email and password. On a successful login attempt return a JWT token containing the authorId in response body like [this](#Successful-login-Response-structure)
 - If the credentials are incorrect return a suitable error message with a valid HTTP status code
 
 ### Authentication
-- Add an authorisation implementation for the JWT token that validates the token before every protected endpoint is called. If the validation fails, return a suitable error message with a corresponding HTTP status code
+- Add an authorization implementation for the JWT token that validates the token before every protected endpoint is called. If the validation fails, return a suitable error message with a corresponding HTTP status code
 - Protected routes are create a blog, edit a blog, get the list of blogs, delete a blog(s)
 - Set the token, once validated, in the request - `x-api-key`
 - Use a middleware for authentication purpose.
 
-### Authorisation
+### Authorization
 - Make sure that only the owner of the blogs is able to edit or delete the blog.
-- In case of unauthorized access return an appropirate error message.
+- In case of unauthorized access return an appropriate error message.
 
 ## Testing (Self-evaluation During Development)
 - To test these apis create a new collection in Postman named Project 1 Blogging 
@@ -132,7 +132,7 @@ Refer below sample
 {
   status: true,
   data: {
-   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JJZCI6IjYyZmUzYmUzMzY2ZmFkNDZjY2Q1MzI3ZiIsImlhdCI6MTY2MDgzMDA4MywiZXhwIjoxNjYwODY2MDgzfQ.mSo-TLyRlGhMNcy4ftEvvIlCHlyEqpaFZc-iBth4lfg"
+   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXCVI9.eyJhdXRob3JJZCI6IjYyZmUzYmUzMzY2ZmFkNDZjY2Q1MzI3ZiIsMildCI6MTY2MDgzMDA4MysiaZXhwJinxNjYwODY2MGdfQ.mSo-TLyRlGhMNcy4ftEvvIlCHlyEpaFZc-iBth4lfg"
 
   }
 }

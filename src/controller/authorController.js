@@ -17,7 +17,7 @@ const createAuthor = async function (req, res) {
         let validTitle = ['Mr', 'Mrs', 'Miss']
         if (!validTitle.includes(req.body.title)) { return res.status(400).send({ message: "invalid title" }) }
         let validPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/
-        if (!validPassword.test(req.body.password)) { return res.status(400).send({ message: "invlide password" }) }
+        if (!validPassword.test(req.body.password)) { return res.status(400).send({ message: "invalid password" }) }
 
 
 

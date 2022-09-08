@@ -61,7 +61,7 @@ const CreateBlog = async function (req, res) {
 //     queryData.isDeleted = false;
 //     queryData.isPublished = true;
 
-//     const blogData = await blogModel.find(obj)
+//     const blogData = await blogsModel.find(obj)
 //     if (blogData.length == 0) {
 //       return res.status(404).send({ status: false, msg: 'No Document Found' })
 //     }
@@ -101,7 +101,7 @@ const getBlogs = async function(req,res){
   }
 }
 
-const putBlogs = async function (req, res) {
+const putBlogs = async  (req, res)=> {
   try {
     let data = req.body
     let id = req.params.blogId
@@ -154,7 +154,7 @@ const deleteBlog = async (req,res)=> {
   }
 }
 
-const deleteQuery=async function(req,res){
+const deleteQuery=async (req,res)=>{
   try{
     let data =req.query
     data["isDeleted"]=false
