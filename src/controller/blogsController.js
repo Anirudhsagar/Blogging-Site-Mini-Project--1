@@ -41,18 +41,17 @@ const getBlogs = async (req,res)=>{
   try{
       let queryData = req.query
       queryData['isPublished'] = true ;
-      queryData['isDeleted'] = false;
-
+      queryData['isDeleTed'] = false;
 
       let authorId =req.query.authorId
       
-      if(!authorId) return res.status(400).send({status : false, msg : "Please enter a valid author Id"})
+      if(authorId =="") return res.status(400).send({status : false, msg : "Please enter a Author Id"})
       
      
       const data = await blogsModel.find(queryData)
       if(!data) return res.status(400).send({status:false,msg:"authorId is invalid"});
       
-      if(data.length==0) return res.status(404).send({status : false, msg : "No data found"})
+      if(data.length==0) return res.status(404).send({status : false, msg : "No data found with this author condition"})
       res.status(200).send({status : true, data : data})
   }
   catch(err){
@@ -123,7 +122,7 @@ const deleteBlog = async (req,res)=> {
 const deleteQuery=async (req,res)=>{
   try{
     let data =req.query
-    data["isDeleted"]=false
+    data["isDeleTed"]=false
     data["isPublished"]=true
     const newData=await blogsModel.find(data);
     if(newData.length<1){

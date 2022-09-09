@@ -44,7 +44,7 @@ const loginAuthor = async function(req,res){
         return res.status(400).send({status:false,msg:"plz fill valid email and password"})
     }
     // if login successfully
-    let uniqueId =checkEmailPassword._id 
+    let uniqueId =checkEmailPassword._id.toString()
     let token = jwt.sign({ID:uniqueId} ,'functionUp-project1')
     res.status(201).send({status:true,msg:token})
 }

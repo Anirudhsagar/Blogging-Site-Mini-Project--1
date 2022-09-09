@@ -15,15 +15,15 @@ router.post("/blogs",middleware.authentication,blogsController.CreateBlog)      
 
 router.get("/getBlogs",blogsController.getBlogs)       // 3rd api
 
-router.put("/blogs/:blogId",middleware.authentication,middleware.auth,blogsController.putBlogs)     // 4th api
+router.put("/blogs/:blogId",middleware.authentication,middleware.authorization,blogsController.putBlogs)     // 4th api
    //,middleware.authentication,middleware.authorization
 
    
-router.delete("/blogs/:blogId",middleware.authentication,middleware.authorization,middleware.auth,blogsController.deleteBlog)  //5 th api
+router.delete("/blogs/:blogId",middleware.authentication,middleware.authorization,blogsController.deleteBlog)  //5 th api
    //,middleware.authentication,middleware.authorization
 
 
-router.delete("/blogs",middleware.auth,blogsController.deleteQuery)   //6th api
+router.delete("/blogs",blogsController.deleteQuery)   //6th api
       //middleware.authentication,
 
 router.post("/loginAuthor",authorController.loginAuthor)   //7th api

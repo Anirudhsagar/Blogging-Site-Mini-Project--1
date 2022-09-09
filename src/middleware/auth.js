@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const blogsModel = require("../model/blogsModel");
-const mongoose = require("mongoose")
+
 
 
 const authentication=function(req,res,next){
@@ -14,7 +14,7 @@ const authentication=function(req,res,next){
         if(!decodedToken){
               res.status(403).send({status:false,message:"the provided token is invalid"});
         }
-        req.loggedInUser = decodedToken.ID
+        loggedInUser = decodedToken.ID
         console.log(req.loggedInUser)
         next();
 
@@ -25,16 +25,12 @@ const authentication=function(req,res,next){
 
 const authorization=async function(req,res,next){
     try{
-   let newId = req.query.authorId
    const blogsId=req.params.blogId;
-//    console.log(newId)
-   if(!newId) return res.send({status:false,msg:"authorId must be present in order to proceed further"})
-   
     let a=await blogsModel.findByIdAndUpdate(blogsId)
 let b=a.authorId;
 
 // console.log(b)
-   if (b !=  req.loggedInUser){
+   if (b !=  loggedInUser){
     return res. status(401).send({status:false, msg: "permission denied"}) 
    }
    next()
@@ -43,19 +39,6 @@ let b=a.authorId;
 }
 }
 
-const auth= async function(req,res,next){
-    try{
-       let authorId=req.query.authorId
-       if(authorId && !mongoose.isValidObjectId(authorId)) return res.status(401).send({status:false,msg:"enter a valid author  id"})  
-        if(authorId && authorId!=req.loggedInUser) return res.status(401).send({msg:"you are not authorized"})
-         req.authorId=req.loggedInUser
-         next();
-    }catch(error){
-       res.status(500).send({status:false,message:error.message})
-   }
-}
-
 
 module.exports.authentication= authentication
 module.exports.authorization=authorization
-module.exports.auth=auth
