@@ -9,6 +9,13 @@ const createAuthor = async function (req, res) {
     try {
         let data = req.body;
         let { email, password, fname, lname, title } = data
+        
+        //email unique 
+        const isEmailAlreadyUsed = await authorModel.findOne({ email }); 
+        if (isEmailAlreadyUsed) {
+            return res.status(400).send({ status: false, message: `email address is already registered` })
+        }
+        //--------
         if (!email) { res.status(400).send({ msg: "email is required" }) }
         if (!password) { res.status(400).send({ msg: "password is required" }) }
         if (!fname) { res.status(400).send({ msg: "fname is required" }) }
