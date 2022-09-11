@@ -13,7 +13,7 @@ const CreateBlog = async (req, res) => {
   try {
   
     let data = req.body;
-    let { title, body, authorId, tags,subcategory, } = data;
+    let { title, body, authorId, tags,subcategory,category } = data;
 
     if (!title) {return res.status(400).send({ msg: "title is required" }) }
      if (!body) {return res.status(400).send({ msg: "body is required" }) }
@@ -61,19 +61,20 @@ const getBlogs = async (req,res)=>{
       queryData['isPublished'] = true ;
       queryData['isDeleted'] = false;
 
-      if (req.query.authorId && !mongoose.isValidObjectId(req.query.authorId))
-      return res.status(400).send({ status: false, msg: "please enter valid authorID" });
 
       let authorId =req.query.authorId
       
       if(authorId =="") return res.status(400).send({status : false, msg : "Please enter a Author Id"})
-      
-     
+
+      if (authorId && !mongoose.isValidObjectId(authorId))
+      return res.status(400).send({ status: false, msg: "please enter valid authorID" });
+
+
       const data = await blogsModel.find(queryData)
-      if(!data) return res.status(400).send({status:false,msg:"authorId is invalid"});
+      
       
       if(data.length==0) return res.status(404).send({status : false, msg : "No data found"})
-      res.status(200).send({status : true, data : data})
+      return res.status(200).send({status : true, data : data})
   }
   catch(err){
       res.status(500).send({status: false, msg : err.message})
@@ -123,7 +124,7 @@ const putBlogs = async  (req, res)=> {
     res.status(200).send({ status: true, msg: updatedBlog })
 
   } catch (err) {
-    console.log(err);
+  
     res.status(500).send({ status: false, msg: err.message })
   }
 }
@@ -164,8 +165,9 @@ const deleteQuery = async (req, res) => {
     if (newData.length < 1) {
       res.status(404).send({ status: false, message: "not found" });
     } else {
-      let newData = await blogsModel.updateMany(data, { $set: { isDeleTed: true } })
+      let newData = await blogsModel.updateMany(data, { $set: { isDeleTed: true } } ,{new: true} )
       res.status(200).send({ status: true, data: newData });
+     
     }
 
   } catch (err) {

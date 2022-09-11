@@ -35,8 +35,7 @@
       if(!data) return res.status(400).send({status:false,msg:"provide valid blogId"})
       const token =req.headers["x-api-key"]
       const decodedToken =jwt.verify(token,'functionUp-project1')
-      console.log(data.authorId)
-      console.log()
+    
       if(data.authorId==decodedToken.ID)
       {
           next()
