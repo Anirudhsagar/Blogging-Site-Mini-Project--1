@@ -1,5 +1,7 @@
  
-  
+  const jwt = require("jsonwebtoken");
+  const blogsModel = require("../model/blogsModel");
+  const mongoose=require('mongoose');
   
   const authentication=(req,res,next)=>{
       try{
