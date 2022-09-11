@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 
 
 // -------- create Author ---------------/// 
-const createAuthor = async function (req, res) {
+const createAuthor = async (req, res)=> {
 
     try {
         let data = req.body;
@@ -42,7 +42,7 @@ const createAuthor = async function (req, res) {
    //     ---------------    login author   ------------------ ////
 
 
-const loginAuthor = async function(req,res){
+const loginAuthor = async (req,res)=>{
     try{
     let enterEmail = req.body.email
     let enterPassword = req.body.password

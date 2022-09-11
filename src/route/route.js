@@ -1,7 +1,11 @@
 const express = require('express');
+
 const router = express.Router();
+
 const authorController= require("../controller/authorController")
+
 const blogsController= require("../controller/blogsController")
+
 const middleware=require("../middleware/auth")
 
 
@@ -13,7 +17,7 @@ router.post("/blogs",middleware.authentication,blogsController.CreateBlog)      
 
       //,middleware.authentication
 
-router.get("/getBlogs",blogsController.getBlogs)       // 3rd api
+router.get("/getBlogs",middleware.authentication,blogsController.getBlogs)       // 3rd api
 
 router.put("/blogs/:blogId",middleware.authentication,middleware.authorization,blogsController.putBlogs)     // 4th api
    //,middleware.authentication,middleware.authorization
