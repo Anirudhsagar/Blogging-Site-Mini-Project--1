@@ -13,7 +13,7 @@ const middleware=require("../middleware/auth")
 router.post("/author", authorController.createAuthor  )     // 1 st api
 
 
-router.post("/blogs",middleware.authentication,blogsController.CreateBlog)       // 2nd api hit
+router.post("/blogs",blogsController.CreateBlog)       // 2nd api hit
 
       //,middleware.authentication
 

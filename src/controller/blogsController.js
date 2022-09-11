@@ -11,7 +11,19 @@ const moment = require("moment");
 
 const CreateBlog = async (req, res) => {
   try {
+  
     let data = req.body;
+    let { title, body, authorId, tags,subcategory, } = data;
+
+    if (!title) {return res.status(400).send({ msg: "title is required" }) }
+     if (!body) {return res.status(400).send({ msg: "body is required" }) }
+     if (!authorId) {return res.status(400).send({ msg: "authorId is required" }) }
+      if (!tags) {return res.status(400).send({ msg: "tags is required" }) }
+     if (!subcategory) {return res.status(400).send({ msg: "subcategory is required" }) }
+     if  (!category) {return res.status(400).send({ msg: "category is required" }) }
+
+
+
     let CurrentDate = moment().format("DD MM YYYY hh:mm:ss");
     let authorId1 = await authorModel.findById(data["authorId"]);
 

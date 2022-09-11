@@ -16,11 +16,11 @@ const createAuthor = async (req, res)=> {
             return res.status(400).send({ status: false, message: `email address is already registered` })
         }
         //--------
-        if (!email) { res.status(400).send({ msg: "email is required" }) }
-        if (!password) { res.status(400).send({ msg: "password is required" }) }
-        if (!fname) { res.status(400).send({ msg: "fname is required" }) }
-        if (!lname) { res.status(400).send({ msg: "lname is required" }) }
-        if (!title) { res.status(400).send({ msg: "title is required" }) }
+        if (!email) { return res.status(400).send({ msg: "email is required" }) }
+        else if (!password) {return res.status(400).send({ msg: "password is required" }) }
+        else if (!fname) {return  res.status(400).send({ msg: "fname is required" }) }
+        else if (!lname) {return res.status(400).send({ msg: "lname is required" }) }
+        else if (!title) {return  res.status(400).send({ msg: "title is required" }) }
 
         let validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         if (!validEmail.test(req.body.email)) { return res.status(400).send({ message: "invalid email address" }) }
