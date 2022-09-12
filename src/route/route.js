@@ -1,36 +1,40 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
 
-const authorController= require("../controller/authorController")
+const authorController = require("../controller/authorController");
 
-const blogsController= require("../controller/blogsController")
+const blogsController = require("../controller/blogsController");
 
-const middleware=require("../middleware/auth")
+const middleware = require("../middleware/auth");
 
+router.post("/author", authorController.createAuthor); // 1 st api
 
+router.post("/blogs", blogsController.CreateBlog); // 2nd api hit
 
-router.post("/author", authorController.createAuthor  )     // 1 st api
+//,middleware.authentication
 
+router.get("/getBlogs", middleware.authentication, blogsController.getBlogs); // 3rd api
 
-router.post("/blogs",blogsController.CreateBlog)       // 2nd api hit
+router.put(
+  "/blogs/:blogId",
+  middleware.authentication,
+  middleware.authorization,
+  blogsController.putBlogs
+); // 4th api
+//,middleware.authentication,middleware.authorization
 
-      //,middleware.authentication
+router.delete(
+  "/blogs/:blogId",
+  middleware.authentication,
+  middleware.authorization,
+  blogsController.deleteBlog
+); //5 th api
+//,middleware.authentication,middleware.authorization
 
-router.get("/getBlogs",middleware.authentication,blogsController.getBlogs)       // 3rd api
+router.delete("/blogs", blogsController.deleteQuery); //6th api
+//middleware.authentication,
 
-router.put("/blogs/:blogId",middleware.authentication,middleware.authorization,blogsController.putBlogs)     // 4th api
-   //,middleware.authentication,middleware.authorization
-
-   
-router.delete("/blogs/:blogId",middleware.authentication,middleware.authorization,blogsController.deleteBlog)  //5 th api
-   //,middleware.authentication,middleware.authorization
-
-
-router.delete("/blogs",blogsController.deleteQuery)   //6th api
-      //middleware.authentication,
-
-router.post("/loginAuthor",authorController.loginAuthor)   //7th api
-
+router.post("/loginAuthor", authorController.loginAuthor); //7th api
 
 module.exports = router;
