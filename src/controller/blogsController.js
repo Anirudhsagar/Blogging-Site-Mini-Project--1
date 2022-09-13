@@ -11,7 +11,7 @@ const moment = require("moment");
 const CreateBlog = async (req, res) => {
   try {
     let data = req.body;
-    let { title, body, authorId, tags, subcategory, category } = data;
+    let { title, body, authorId, tags, subcategory, category,isPublished,isDeleted } = data;
 
     if (!title) {
       return res.status(400).send({ msg: "title is required" });
@@ -32,7 +32,7 @@ const CreateBlog = async (req, res) => {
       return res.status(400).send({ msg: "category is required" });
     }
 
-    let CurrentDate = moment().format("DD MM YYYY hh:mm:ss");
+    
     let authorId1 = await authorModel.findById(data["authorId"]);
 
     if (!data.authorId) {
@@ -42,11 +42,15 @@ const CreateBlog = async (req, res) => {
       return res.status(400).send({ Error: "authorId is invalid" });
     }
 
-    if (data["isPublished"] == true) {
-      data["publishedAt"] = CurrentDate;
+
+    if (isPublished) {
+      let timeStamps = new Date();
+      data.publishedAt = timeStamps;
     }
-    if (data["isDeleted"] == true) {
-      data["deletedAt"] = CurrentDate;
+
+    if(isDeleted){
+      let timeStamps = new Date();
+    data.deletedAt = timeStamps;
     }
 
     let savedData = await blogsModel.create(data);
@@ -61,7 +65,7 @@ const CreateBlog = async (req, res) => {
 const getBlogs = async (req, res) => {
   try {
     let queryData = req.query;
-    queryData["isPublished"] = true;
+    queryData["isPublished"] = false;
     queryData["isDeleted"] = false;
 
     let authorId = req.query.authorId;
@@ -100,14 +104,14 @@ const putBlogs = async (req, res) => {
     let data = req.body;
 
     let updatedBlog = await blogsModel.findOneAndUpdate(
-      { _id: blogId, isDeleTed: false }, //it will check blog is available or not
+      { _id: blogId, isDeleted: false }, //it will check blog is available or not
 
       {
         $set: {
           title: data.title,
           body: data.body,
           category: data.category,
-          publishedAt: new Date(),
+          
           isPublished: true,
         },
         $push: {
@@ -115,10 +119,10 @@ const putBlogs = async (req, res) => {
           subcategory: req.body.subcategory,
         },
       },
-      { new: true, upsert: true }
+      { new: true }
     );
 
-    res.status(200).send({ status: true, msg: updatedBlog });
+    res.status(200).send({ status:true, data:updatedBlog ,message:"Update Successfully"});
   } catch (err) {
     res.status(500).send({ status: false, msg: err.message });
   }
@@ -130,17 +134,17 @@ const deleteBlog = async (req, res) => {
   try {
     const blogId = req.params.blogId;
     let dateTime = new Date();
-    const checkBlog = await blogsModel.find({ _id: blogId, isDeleTed: false });
+    const checkBlog = await blogsModel.find({ _id: blogId, isDeleted: false });
     if (!checkBlog)
       return res.status(404).send({ status: false, msg: "No Such blog" });
 
-    if (checkBlog.isDeleTed == true)
+    if (checkBlog.isDeleted == true)
       return res
         .status(400)
         .send({ status: false, msg: "No such blog available to delete" });
     const data = await blogsModel.findOneAndUpdate(
       { _id: blogId },
-      { $set: { isDeleTed: true, deletedAt: dateTime } },
+      { $set: { isDeleted: true, deletedAt: dateTime } },
       { new: true }
     );
     res.status(200).send({ status: true, msg: data });
@@ -153,21 +157,21 @@ const deleteBlog = async (req, res) => {
 const deleteQuery = async (req, res) => {
   try {
     let data = req.query;
-    data["isDeleTed"] = false;
+    data["isDeleted"] = false;
     data["isPublished"] = true;
     const newData = await blogsModel.find(data);
     if (newData.length < 1) {
-      res.status(404).send({ status: false, message: "not found" });
+      return res.status(404).send({ status: false, message: "not found" });
     } else {
       let newData = await blogsModel.updateMany(
         data,
-        { $set: { isDeleTed: true } },
+        { $set: { isDeleted: true } },
         { new: true }
       );
-      res.status(200).send({ status: true, data: newData });
+      return res.status(200).send({ status: true, data: newData });
     }
   } catch (err) {
-    res.status(500).send({ status: false, msg: err.message });
+   return res.status(500).send({ status: false, msg: err.message });
   }
 };
 

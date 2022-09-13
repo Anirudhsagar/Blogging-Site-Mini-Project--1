@@ -2,35 +2,42 @@ const authorModel = require("../model/authorModel");
 const jwt = require("jsonwebtoken");
 
 // -------- create Author ---------------///
+
+const isValid = function(value){
+  if (typeof value ==='undefined' || value === null) return false
+  if (typeof value === 'string' && value.trim().length === 0) return false
+  return true
+}
+
+
 const createAuthor = async (req, res) => {
   try {
     let data = req.body;
     let { email, password, fname, lname, title } = data;
 
+    if (!isValid(email)) {
+      return res.status(400).send({ msg: "email is required" });
+    }
+    
     //email unique
     const isEmailAlreadyUsed = await authorModel.findOne({ email });
     if (isEmailAlreadyUsed) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: `email address is already registered`,
-        });
+      return res.status(400).send({status: false,message: `email address is already registered`,});
     }
     //--------
-    if (!email) {
-      return res.status(400).send({ msg: "email is required" });
-    }
-    if (!password) {
+    let enumTitle = ['Mr', 'Mrs', 'Miss'];
+    if(!enumTitle.includes(title)) return res.status(400).send({ status: false, msg: "Title should be of Mr,or Mrs, or Miss" });
+   
+    if (!isValid(password)) {
       return res.status(400).send({ msg: "password is required" });
     }
-    if (!fname) {
+    if (!isValid(fname)) {
       return res.status(400).send({ msg: "fname is required" });
     }
-    if (!lname) {
+    if (!isValid(lname)) {
       return res.status(400).send({ msg: "lname is required" });
     }
-    if (!title) {
+    if (!isValid(title)) {
       return res.status(400).send({ msg: "title is required" });
     }
 
@@ -49,7 +56,7 @@ const createAuthor = async (req, res) => {
     }
 
     let createAuthor = await authorModel.create(data);
-    res.status(200).send({ data: createAuthor, status: true });
+    res.status(201).send({ data: createAuthor, status: true });
   } catch (err) {
     res.status(500).send({ msg: err.message });
   }
@@ -67,12 +74,12 @@ const loginAuthor = async (req, res) => {
     if (!checkEmailPassword) {
       return res
         .status(400)
-        .send({ status: false, msg: "plz fill valid email and password" });
+        .send({ status: false, message: "plz fill valid email and password" });
     }
     // if login successfully
     let uniqueId = checkEmailPassword._id.toString();
-    let token = jwt.sign({ ID: uniqueId }, "functionUp-project1");
-    res.status(201).send({ status: true, msg: token });
+    let token = jwt.sign({ ID:uniqueId }, "functionUp-project1");
+    res.status(201).send({ status: true, data: {token:token }});
   } catch (err) {
     console.log("Error is: ", err.message);
     res.status(500).send({ status: false, msg: "Error", Error: err.message });

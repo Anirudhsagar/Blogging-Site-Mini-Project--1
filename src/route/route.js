@@ -8,13 +8,13 @@ const blogsController = require("../controller/blogsController");
 
 const middleware = require("../middleware/auth");
 
-router.post("/author", authorController.createAuthor); // 1 st api
+router.post("/authors", authorController.createAuthor); // 1 st api
 
 router.post("/blogs", blogsController.CreateBlog); // 2nd api hit
 
 //,middleware.authentication
 
-router.get("/getBlogs", middleware.authentication, blogsController.getBlogs); // 3rd api
+router.get("/blogs", middleware.authentication, blogsController.getBlogs); // 3rd api
 
 router.put(
   "/blogs/:blogId",
@@ -32,7 +32,7 @@ router.delete(
 ); //5 th api
 //,middleware.authentication,middleware.authorization
 
-router.delete("/blogs", blogsController.deleteQuery); //6th api
+router.delete("/blogs", middleware.authentication,blogsController.deleteQuery); //6th api
 //middleware.authentication,
 
 router.post("/loginAuthor", authorController.loginAuthor); //7th api
