@@ -35,6 +35,6 @@ router.delete(
 router.delete("/blogs", middleware.authentication,blogsController.deleteQuery); //6th api
 //middleware.authentication,
 
-router.post("/loginAuthor", authorController.loginAuthor); //7th api
+router.post("/login", authorController.loginAuthor); //7th api
 
 module.exports = router;
